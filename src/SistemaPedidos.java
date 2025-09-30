@@ -1,14 +1,19 @@
+import java.time.LocalDate;
+
 public class SistemaPedidos {
     public static void main(String[] args) {
-        Produto produto1 = new Produto("Camiseta", 29.99);
-        Produto produto2 = new Produto("Calça", 49.99);
-        
-        produto1.adicionarEstoque(100);
-        produto2.adicionarEstoque(50);
-        
-        Cliente cliente = new Cliente("João Silva", "joaosilva@email.com");
+        Produto teclado = new Produto("Fortrek Teclado Gamer BLACK EAGLE", 79.10);
+        Produto mousePad = new Produto("Mouse Pad Preto", 8.90);
+        Produto mouse = new Produto("Mouse Dell sem fio - WM118", 69);
 
-        System.out.println(produto1.getNome() + " - Preço: R$" + produto1.getPreco() + " - Estoque: " + produto1.getEstoque());
-        System.out.println(cliente.getNome() + " - Email: " + cliente.getEmail());
+        ItemPedido[] itens = {
+                new ItemPedido(teclado, 1),
+                new ItemPedido(mousePad, 2),
+                new ItemPedido(mouse, 2)
+        };
+
+        Pedido pedido = new Pedido(1, LocalDate.now(), "novo", itens);
+
+        System.out.printf("Valor total do pedido: R$%.02f\n", pedido.calcularTotal());
     }
 }

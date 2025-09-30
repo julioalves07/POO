@@ -2,13 +2,15 @@ import java.time.LocalDate;
 
 public class Pedido {
     private int numero;
-    private String status;
     private LocalDate data;
+    private String status;
+    private ItemPedido[] itens;
 
-    public Pedido(int numero, String status, LocalDate data) {
+    public Pedido(int numero, LocalDate data, String status, ItemPedido[] itens) {
         this.numero = numero;
-        this.status = status;
         this.data = data;
+        this.status = status;
+        this.itens = itens;
     }
 
     public int getNumero() {
@@ -19,6 +21,14 @@ public class Pedido {
         this.numero = numero;
     }
 
+    public LocalDate getData() {
+        return data;
+    }
+
+    public void setData(LocalDate data) {
+        this.data = data;
+    }
+
     public String getStatus() {
         return status;
     }
@@ -27,11 +37,12 @@ public class Pedido {
         this.status = status;
     }
 
-    public LocalDate getData() {
-        return data;
-    }
+    public double calcularTotal() {
+        double total = 0;
+        for (ItemPedido item : itens) {
+            total += item.getSubtotal();
+        }
 
-    public void setData(LocalDate data) {
-        this.data = data;
+        return total;
     }
 }
