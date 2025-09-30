@@ -1,21 +1,14 @@
 public class SistemaPedidos {
     public static void main(String[] args) {
-        Produto produto1 = new Produto();
-        Produto produto2 = new Produto();
-
-        produto1.nome = "Camiseta";
-        produto1.preco = 29.99;
-        produto1.estoque = 100;
-
-        produto2.nome = "Calça";
-        produto2.preco = 49.99;
-        produto2.estoque = 50;
+        Produto produto1 = new Produto("Camiseta", 29.99);
+        Produto produto2 = new Produto("Calça", 49.99);
         
-        Cliente cliente = new Cliente();
-        cliente.nome = "João Silva";
-        cliente.email = "joaosilva@email.com";
+        produto1.adicionarEstoque(100);
+        produto2.adicionarEstoque(50);
+        
+        Cliente cliente = new Cliente("João Silva", "joaosilva@email.com");
 
-        System.out.println(produto1.nome + " - Preço: R$" + produto1.preco + " - Estoque: " + produto1.estoque);
-        System.out.println(cliente.nome + " - Email: " + cliente.email);
+        System.out.println(produto1.getNome() + " - Preço: R$" + produto1.getPreco() + " - Estoque: " + produto1.getEstoque());
+        System.out.println(cliente.getNome() + " - Email: " + cliente.getEmail());
     }
 }
