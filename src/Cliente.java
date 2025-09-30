@@ -1,6 +1,6 @@
-public class Cliente {
-    private String nome;
-    private String email;
+public abstract class Cliente {
+    String nome;
+    String email;
 
     public Cliente(String nome, String email) {
         this.nome = nome;

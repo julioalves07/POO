@@ -1,7 +1,7 @@
 public class Produto {
-    private String nome;
-    private double preco;
-    private int estoque = 0;
+    String nome;
+    double preco;
+    int estoque = 0;
 
     public Produto(String nome, double preco) {
         this.nome = nome;

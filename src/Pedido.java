@@ -8,6 +8,7 @@ public class Pedido {
     private String status;
     private List<ItemPedido> itens = new ArrayList<>();
     private Cliente cliente;
+    private IPagamento metodoPagamento;
 
     public Pedido(int numero, Cliente cliente) {
         this.numero = numero;
@@ -48,6 +49,10 @@ public class Pedido {
         this.cliente = cliente;
     }
 
+    public void adicionarItem(Produto produto, int quantidade){
+        this.itens.add(new ItemPedido(produto, quantidade));
+    }
+
     public double calcularTotal() {
         double total = 0;
         for (ItemPedido item : itens) {
@@ -57,7 +62,15 @@ public class Pedido {
         return total;
     }
 
-    public void adicionarItem(Produto produto, int quantidade){
-        this.itens.add(new ItemPedido(produto, quantidade));
+    public void setMetodoPagamento(IPagamento metodoPagamento) {
+        this.metodoPagamento = metodoPagamento;
+    }
+
+    public void finalizar() {
+
+        if(metodoPagamento.processarPagamento(calcularTotal()))
+            System.out.println("Aprovado");
+        else 
+            System.out.println("Recusado");
     }
 }

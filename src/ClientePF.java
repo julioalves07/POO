@@ -3,7 +3,6 @@ public class ClientePF extends Cliente{
 
     public ClientePF(String nome, String email, String cpf){
         super(nome, email);
-
         this.cpf = cpf;
     }
 
