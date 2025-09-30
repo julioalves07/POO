@@ -1,16 +1,19 @@
 import java.time.LocalDate;
+import java.util.List;
+import java.util.ArrayList;
 
 public class Pedido {
     private int numero;
     private LocalDate data;
     private String status;
-    private ItemPedido[] itens;
+    private List<ItemPedido> itens = new ArrayList<>();
+    private Cliente cliente;
 
-    public Pedido(int numero, LocalDate data, String status, ItemPedido[] itens) {
+    public Pedido(int numero, Cliente cliente) {
         this.numero = numero;
-        this.data = data;
-        this.status = status;
-        this.itens = itens;
+        this.data = LocalDate.now();
+        this.status = "novo";
+        this.cliente = cliente;
     }
 
     public int getNumero() {
@@ -37,6 +40,14 @@ public class Pedido {
         this.status = status;
     }
 
+    public Cliente getCliente(){
+        return this.cliente;
+    }
+
+    public void setCliente(Cliente cliente){
+        this.cliente = cliente;
+    }
+
     public double calcularTotal() {
         double total = 0;
         for (ItemPedido item : itens) {
@@ -44,5 +55,9 @@ public class Pedido {
         }
 
         return total;
+    }
+
+    public void adicionarItem(Produto produto, int quantidade){
+        this.itens.add(new ItemPedido(produto, quantidade));
     }
 }
