@@ -3,74 +3,94 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Pedido {
-    private int numero;
+    private StatusPedido statusPedido;
     private LocalDate data;
-    private String status;
-    private List<ItemPedido> itens = new ArrayList<>();
     private Cliente cliente;
+    private List<ItemPedido> itens = new ArrayList<>();
     private IPagamento metodoPagamento;
 
-    public Pedido(int numero, Cliente cliente) {
-        this.numero = numero;
+    public Pedido(Cliente cliente){
         this.data = LocalDate.now();
-        this.status = "novo";
         this.cliente = cliente;
+        this.statusPedido = StatusPedido.PENDENTE;
     }
 
-    public int getNumero() {
-        return numero;
-    }
-
-    public void setNumero(int numero) {
-        this.numero = numero;
-    }
-
-    public LocalDate getData() {
+    public LocalDate getData(){
         return data;
     }
 
-    public void setData(LocalDate data) {
+    public void setData(LocalDate data){
         this.data = data;
     }
 
-    public String getStatus() {
-        return status;
+    public StatusPedido getStatus(){
+        return statusPedido;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setStatus(StatusPedido statusPedido){
+        this.statusPedido = statusPedido;
     }
 
     public Cliente getCliente(){
-        return this.cliente;
+        return cliente;
     }
 
     public void setCliente(Cliente cliente){
         this.cliente = cliente;
     }
 
-    public void adicionarItem(Produto produto, int quantidade){
-        this.itens.add(new ItemPedido(produto, quantidade));
+    public IPagamento getMetodoPagamento(){
+        return metodoPagamento;
     }
 
-    public double calcularTotal() {
+    public void setMetodoPagamento(IPagamento metodoPagamento){
+        this.metodoPagamento = metodoPagamento;
+    }
+
+    public List<ItemPedido> getItens(){
+        return itens;
+    }
+
+    public void adicionarItem(Produto produto, int quantidade){
+        for(ItemPedido item : getItens()){
+            if(item.getProduto().getId().equals(produto.getId())){
+                item.setQuantidade(item.getQuantidade() + quantidade);
+                return;
+            }
+        }
+
+        getItens().add(new ItemPedido(produto, quantidade));
+    }
+
+    public void removerItem(ItemPedido item){
+        getItens().remove(item);
+    }
+
+    public double calcularTotal(){
         double total = 0;
-        for (ItemPedido item : itens) {
+
+        for(ItemPedido item : getItens()){
             total += item.getSubtotal();
         }
 
         return total;
     }
 
-    public void setMetodoPagamento(IPagamento metodoPagamento) {
-        this.metodoPagamento = metodoPagamento;
+    public void aplicarDesconto(double desconto){
+        getItens().forEach(item -> item.setPrecoUnitario(item.getPrecoUnitario()*(1-desconto)));
     }
 
-    public void finalizar() {
+    public boolean confirmarPedido(){
+        if(getStatus() != StatusPedido.PENDENTE) return false;
+        if(getMetodoPagamento() == null) return false;
 
-        if(metodoPagamento.processarPagamento(calcularTotal()))
-            System.out.println("Aprovado");
-        else 
-            System.out.println("Recusado");
+        boolean pagamentoAprovado = metodoPagamento.processarPagamento(calcularTotal());
+
+        if(pagamentoAprovado)
+            setStatus(StatusPedido.PROCESSANDO);
+        else
+            setStatus(StatusPedido.PENDENTE);
+
+        return pagamentoAprovado;
     }
 }

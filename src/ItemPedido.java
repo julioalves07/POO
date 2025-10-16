@@ -1,10 +1,12 @@
 public class ItemPedido {
     private Produto produto;
     private int quantidade;
+    private double precoUnitario;
 
     public ItemPedido(Produto produto, int quantidade) {
         this.produto = produto;
         this.quantidade = quantidade;
+        this.precoUnitario = produto.getPreco();
     }
 
     public Produto getProduto() {
@@ -23,7 +25,15 @@ public class ItemPedido {
         this.quantidade = quantidade;
     }
 
+    public double getPrecoUnitario() {
+        return precoUnitario;
+    }
+
+    public void setPrecoUnitario(double precoUnitario) {
+        this.precoUnitario = precoUnitario;
+    }
+
     public double getSubtotal() {
-        return produto.getPreco() * quantidade;
+        return precoUnitario * quantidade;
     }
 }

@@ -2,8 +2,11 @@ public class Produto {
     String nome;
     double preco;
     int estoque = 0;
+    String id;
+    String descricao;
 
-    public Produto(String nome, double preco) {
+    public Produto(String id, String nome, double preco) {
+        this.id = id;
         this.nome = nome;
         this.preco = preco;
     }
@@ -32,9 +35,13 @@ public class Produto {
         this.estoque = estoque;
     }
 
+    public String getId(){
+        return id;
+    }
+
     void adicionarEstoque(int quantidade) {
         if (quantidade > 0) {
-            this.estoque += quantidade;
+            estoque += quantidade;
         }
     }
 }
